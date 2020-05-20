@@ -1,0 +1,14 @@
+<nav class="navbar fixed-top bg-green1<%= "-70" if request.path == root_path %>">
+  <%= link_to "工具管理", root_path, class: "navbar-brand font-weight-bold mr-auto ml-3 text-white" %>
+  <% if request.path == login_path %>
+    <%= link_to signup_path, class: "nav-link text-white" do %>
+      新規登録
+     <%= icon "fas", "sign-in-alt" %>
+    <% end %>
+  <% else %>
+    <%= link_to login_path, class: "nav-link text-white" do %>
+      ログイン
+      <%= icon "fas", "sign-in-alt" %>
+    <% end %>
+  <% end %>
+</nav>

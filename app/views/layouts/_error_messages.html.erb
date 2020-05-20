@@ -1,0 +1,10 @@
+<% if model.errors.any? %>
+  <div class="alert alert-danger border border-danger p-0 small text-center">
+    <p class="bg-danger text-white m-0"><%= model.errors.count %>件のエラーがあります。修正後、再度送信してください。</p>
+    <ul class="my-0">
+      <% model.errors.full_messages.each do |message| %>
+        <li class="text-left"><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

@@ -1,0 +1,38 @@
+<div class="mx-3 mt-4 mb-3 p-4 rounded-lg bg-white-80 border-green1 content-box">
+
+  <div class="mb-4 d-flex align-items-center">
+    <h5 class="m-0 mr-auto text-green2">保管場所一覧</h5>
+    <% if admin?(current_user) || app_admin?(current_user) %>
+      <%= link_to new_place_path, class:"mr-1 btn btn-sm btn-success btn-width" do %>
+        <%= icon "fas", "plus" %>
+        新規登録
+      <% end %>
+    <% end %>
+  </div>
+
+  <table class="table table-striped table-sm text-green2">
+    <thead>
+      <th scope="col"><%= Place.human_attribute_name(:place_master_id) %></th>
+      <th scope="col"><%= PlaceMaster.human_attribute_name(:building) %></th>
+      <th scope="col"><%= PlaceMaster.human_attribute_name(:room_num) %></th>
+      <th scope="col"><%= PlaceMaster.human_attribute_name(:name) %></th>
+      <% if admin?(current_user) || app_admin?(current_user) %>
+        <th scope="col"></th>
+      <% end %>
+    </thead>
+    <tbody>
+      <% @places.each do |p| %>
+        <tr>
+          <td><%= p.place_master_id %></td>
+          <td><%= p.place_master.building %></td>
+          <td><%= p.place_master.room_num %></td>
+          <td><%= p.place_master.name %></td>
+          <% if admin?(current_user) || app_admin?(current_user) %>
+            <td class="text-right"><%= link_to "編集", edit_place_path(p.id), class: "btn btn-sm btn-outline-dark" %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</div>

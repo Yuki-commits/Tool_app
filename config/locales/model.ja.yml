@@ -1,0 +1,78 @@
+ja:
+  activerecord:
+    models:
+      user: ユーザー
+      Group: 部門
+      tool: 工具
+      place: 保管場所
+      place_master: 保管場所マスタ
+      category: カテゴリー
+      sub_category: サブカテゴリー
+      other_category: その他
+      tool_users: 工具使用履歴
+
+    # model毎に定義したいattributesを記述
+    attributes:
+
+      user:
+        employee_number: 社員番号
+        name: 氏名
+        email: メールアドレス
+        group_id: 所属部門コード
+        password: パスワード
+        password_confirmation: パスワード（確認）
+        admin: ユーザー区分
+        approval_flag: 承認待ち
+
+      group:
+        group_id: 管理部門コード
+        code: 部門コード
+        name: 部門名称
+        users: ユーザー
+        tools: 工具
+
+      tool:
+        code: 工具コード
+        name: 工具名称
+        quantity: 数量
+        price: 合計金額
+        user_id: 登録ユーザー
+        category_id: カテゴリー
+        sub_category_id: サブカテゴリー
+        other_category_id: その他
+        place_id: 保管場所ＩＤ
+        place_master_id: 保管場所マスタＩＤ
+
+      place_master:
+        building: 建物名称
+        room_num: 部屋番号
+        name: 保管場所名称
+
+      place:
+        place_master_id: ＩＤ
+        tools: 工具
+
+      category:
+        name: カテゴリー
+        tools: 工具
+        sub_categories: サブカテゴリー
+        other_categories: その他
+
+      sub_category:
+        name: サブカテゴリー
+        category_id: カテゴリー
+        tools: 工具
+
+      other_category:
+        name: その他
+        category_id: カテゴリー
+        tools: 工具
+
+      tool_user:
+        tool_id: 使用工具
+        user_id: 使用者
+
+  # 共通
+  attributes:
+    created_at: 作成日
+    updated_at: 更新日

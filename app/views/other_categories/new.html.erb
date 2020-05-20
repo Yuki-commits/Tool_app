@@ -1,0 +1,35 @@
+<div class="mx-3 mt-4 mb-3 p-4 rounded-lg bg-white-80 border-green1">
+
+  <div class="mb-4 d-flex align-items-center">
+    <h5 class="m-0 mr-auto text-green2">サブカテゴリー新規登録</h5>
+    <%= link_to "カテゴリー", new_category_path, class: "mr-1 btn btn-sm btn-success btn-width" %>
+    <%= link_to "一覧画面へ", categories_path, class:"btn btn-sm btn-success btn-width" %>
+  </div>
+
+  <%= form_for @other_category, html: { class: "text-green2" } do |f| %>
+
+    <%= render partial: 'layouts/error_messages', locals: { model: f.object } %>
+
+    <div class="form-row">
+      <div class="form-group col-md">
+        <%= f.label :category_id, class: "col-form-label col-form-label-sm" %>
+        <select required="required" class="form-control form-control-sm" name="other_category[category_id]">
+          <option value>選択してください</option>
+          <%= @categories.each do |category| %>
+            <option value=<%= category.id %>><%= category.name %></option>
+          <% end %>
+        </select>
+      </div>
+      <div class="form-group col-md">
+        <%= f.label :name, class: "col-form-label col-form-label-sm" %>
+        <%= f.text_field :name, required: true, class: "form-control form-control-sm" %>
+      </div>
+    </div>
+
+    <div class="text-right">
+      <%= f.submit "登録", class: "btn btn-sm btn-success btn-width" %>
+    </div>
+
+  <% end %>
+
+</div>

@@ -1,0 +1,114 @@
+<div class="mx-3 mt-4 mb-3 p-4 rounded-lg bg-white-80 border-green1 ">
+
+  <div class="mb-4 d-flex align-items-center">
+    <h5 class="m-0 mr-auto text-green2">工具詳細</h5>
+    <% if !viewer?(current_user) %>
+      <% if !@tool_user %>
+        <%= link_to "借りる", tool_tool_users_path(tool_id: @tool.id), class: "mr-1 btn btn-sm btn-outline-secondary btn-width", method: :post %>
+      <% elsif current_user?(@tool_user.user) %>
+        <%= link_to "返却する", tool_tool_users_path(tool_id: @tool.id), class: "mr-1 btn btn-sm btn-outline-secondary btn-width", method: :delete %>
+      <% else %>
+        <%= link_to "#{@tool_user.user.name}にて現在使用中", edit_user_path(@tool_user.user.id), class: "mr-1 btn btn-sm btn-outline-secondary" %>
+      <% end %>
+    <% end %>
+    <%= link_to "一覧画面へ", tools_path, class:"btn btn-sm btn-success btn-width" %>
+  </div>
+
+  <div class="alert-danger p-0">
+    <%= @error_message %>
+  </div>
+  <%= form_for @tool, html: { class: "text-green2" } do |f| %>
+
+    <%= render partial: 'layouts/error_messages', locals: { model: f.object } %>
+
+    <%# 工具情報 %>
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <%= f.label :code, class: "col-form-label col-form-label-sm" %>
+        <span class="badge badge-danger">必須</span>
+        <%= f.text_field :code, disabled: @disabled, class: "form-control form-control-sm" %>
+      </div>
+      <div class="form-group col-md-8">
+        <%= f.label :name, class: "col-form-label col-form-label-sm" %>
+        <span class="badge badge-danger">必須</span>
+        <%= f.text_field :name, required: true, disabled: @disabled, class: "form-control form-control-sm" %>
+      </div>
+    </div>
+
+    <%# カテゴリー各種 %>
+    <div class="form-row">
+      <div class="form-group col-md">
+        <label class="col-form-label col-form-label-sm"><%= Category.human_attribute_name(:name) %></label>
+        <span class="badge badge-danger">必須</span>
+        <select required="required" <%= @disabled %> class="form-control form-control-sm" id="select-category" name="tool[category_id]">
+          <%= @categories.each do |category| %>
+            <option <%= selected="selected" if @tool.category_id == category.id %> value=<%= category.id %>><%= category.name %></option>
+          <% end %>
+        </select>
+      </div>
+      <div class="form-group col-md">
+        <label class="col-form-label col-form-label-sm"><%= SubCategory.human_attribute_name(:name) %></label>
+        <span class="badge badge-danger">必須</span>
+        <select required="required" <%= @disabled %> class="form-control form-control-sm" id="select-sub-category" name="tool[sub_category_id]">
+          <%= @tool.category.sub_categories.each do |sub_category| %>
+            <option <%= selected="selected" if @tool.sub_category_id == sub_category.id %> value=<%= sub_category.id %>><%= sub_category.name %></option>
+          <% end %>
+          <option <%= selected="selected" if @tool.other_category_id %>>その他</option>
+        </select>
+      </div>
+      <div class="form-group col-md">
+        <label class="col-form-label col-form-label-sm"><%= OtherCategory.human_attribute_name(:name) %></label>
+        <span class="badge badge-danger <%= @display_none %>" id="badge-required">必須</span>
+        <input <%= @other_category_disabled %> type="text" list="other-category-list" class="form-control form-control-sm" id="text-other-category" name="other_category_name" value=<%= @other_category %>>
+        <datalist id="other-category-list">
+        </datalist>
+      </div>
+    </div>
+
+    <%# 保管場所 %>
+    <div class="form-row">
+      <div class="form-group col-md">
+        <%= f.label :place_id, class: "col-form-label col-form-label-sm" %>
+        <span class="badge badge-danger">必須</span>
+        <select required="required" <%= @disabled %> class="form-control form-control-sm" id="select-place-id" name="tool[place_id]">
+          <%= @places.each do |place| %>
+            <option <%= selected="selected" if @tool.place_id == place.id %> value="<%= place.id %>"><%= place.id %></option>
+          <% end %>
+        </select>
+      </div>
+      <div class="form-group col-md">
+        <label class="col-form-label col-form-label-sm"><%= PlaceMaster.human_attribute_name(:building) %></label>
+        <input disabled="disabled" class="form-control form-control-sm" id="select-place-building" type="text" value=<%= @tool.place.place_master.building %>>
+      </div>
+      <div class="form-group col-md">
+        <label class="col-form-label col-form-label-sm"><%= PlaceMaster.human_attribute_name(:room_num) %></label>
+        <input disabled="disabled" class="form-control form-control-sm" id="select-place-room" type="text" value=<%= @tool.place.place_master.room_num %>>
+      </div>
+      <div class="form-group col-md">
+        <label class="col-form-label col-form-label-sm"><%= PlaceMaster.human_attribute_name(:name) %></label>
+        <input disabled="disabled" class="form-control form-control-sm" id="select-place-name" type="text" value=<%= @tool.place.place_master.name %>>
+      </div>
+    </div>
+
+    <%# 数量、金額 %>
+    <div class="form-row">
+      <div class="form-group col-md">
+        <%= f.label :quantity, class: "col-form-label col-form-label-sm" %>
+        <%= f.number_field :quantity,  min: 1, disabled: @disabled, class: "form-control form-control-sm text-right" %>
+      </div>
+      <div class="form-group col-md">
+        <%= f.label :price, class: "col-form-label col-form-label-sm" %>
+        <%= f.number_field :price,  min: 1, disabled: @disabled, class: "form-control form-control-sm  text-right" %>
+      </div>
+    </div>
+
+    <% unless @disabled %>
+      <div class="text-right">
+        <%= link_to "削除", tool_path(id: @tool.id), method: :delete, class: "btn btn-sm btn-danger btn-width" %>
+        <%= f.submit "更新", class: "btn btn-sm btn-success btn-width" %>
+      </div>
+    <% end %>
+
+  <% end %>
+
+</div>

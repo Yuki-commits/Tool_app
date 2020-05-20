@@ -1,0 +1,5 @@
+<% flash.each do |message_type, message| %>
+  <div class="alert-<%= message_type %> flash-message <%= "ml-sidebar" if logged_in? %>">
+    <%= message %>
+  </div>
+<% end %>

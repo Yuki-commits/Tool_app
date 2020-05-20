@@ -1,0 +1,7 @@
+<%# 変数[selected_admin]には、初期状態にしておく区分のNOを渡す %>
+<label class="col-form-label col-form-label-sm"><%= User.human_attribute_name(:admin) %></label>
+<select required="required" <%= disabled="disabled" if @group_admin_boolean %> class="form-control form-control-sm" name="user[admin]">
+  <%= @options_admin_array.each do |admin| %>
+    <option <%= selected="selected" if admin[0] == selected_admin %> value="<%= admin[0]%>"><%= admin[1] %></option>
+  <% end %>
+</select>

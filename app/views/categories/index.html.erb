@@ -1,0 +1,78 @@
+<div class="mx-3 mt-4 mb-3 p-4 rounded-lg bg-white-80 border-green1 content-box">
+
+  <div class="mb-4 d-flex align-items-center">
+    <h5 class="m-0 mr-auto text-green2">カテゴリー一覧</h5>
+    <% if admin?(current_user) || app_admin?(current_user) %>
+      <% if current_user.approval_flag %>
+        <%= link_to new_category_path, class:"mr-1 btn btn-sm btn-success btn-width" do %>
+          <%= icon "fas", "plus" %>
+          新規登録
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <table class="table table-striped table-sm text-green2">
+    <thead>
+      <th scope="col"><%= Category.human_attribute_name(:name) %></th>
+      <th scope="col"><%= SubCategory.human_attribute_name(:name) %></th>
+      <th scope="col"><%= OtherCategory.human_attribute_name(:name) %></th>
+    </thead>
+    <tbody>
+
+      <%# アプリ管理者、管理者はリンク付き %>
+      <% if admin?(current_user) || app_admin?(current_user) %>
+        <% @categories.each do |category| %>
+          <% category.sub_categories.each do |sub_category| %>
+            <tr>
+              <td class="position-relative"><%= link_to category.name, edit_category_path(category.id), class: "stretched-link text-dark" %></td>
+              <td class="position-relative"><%= link_to sub_category.name, edit_sub_category_path(sub_category.id), class: "stretched-link text-dark" %></td>
+              <td>-</td>
+            </tr>
+          <% end %>
+          <% category.other_categories.each do |other_category| %>
+            <tr>
+              <td class="position-relative"><%= link_to category.name, edit_category_path(category.id), class: "stretched-link text-dark" %></td>
+              <td>その他</td>
+              <td class="position-relative"><%= link_to other_category.name, edit_other_category_path(other_category.id), class: "stretched-link text-dark" %></td>
+            </tr>
+          <% end %>
+          <% if category.sub_categories.count == 0 && category.other_categories.count == 0 %>
+            <tr>
+              <td class="position-relative"><%= link_to category.name, edit_category_path(category.id), class: "stretched-link text-dark" %></td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+          <% end %>
+        <% end %>
+
+      <% else %>
+
+        <% @categories.each do |category| %>
+          <% category.sub_categories.each do |sub_category| %>
+            <tr>
+              <td class="position-relative"><%= category.name %></td>
+              <td class="position-relative"><%= sub_category.name %></td>
+              <td>-</td>
+            </tr>
+          <% end %>
+          <% category.other_categories.each do |other_category| %>
+            <tr>
+              <td class="position-relative"><%= category.name %></td>
+              <td>その他</td>
+              <td class="position-relative"><%= other_category.name %></td>
+            </tr>
+          <% end %>
+          <% if category.sub_categories.count == 0 && category.other_categories.count == 0 %>
+            <tr>
+              <td class="position-relative"><%= category.name %></td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+          <% end %>
+        <% end %>
+      <% end %>
+
+    </tbody>
+  </table>
+</div>

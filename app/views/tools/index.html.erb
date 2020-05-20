@@ -1,0 +1,16 @@
+<div class="mx-3 mt-4 mb-3 p-4 rounded-lg bg-white-80 border-green1 content-box">
+  <div class="mb-4 d-flex align-items-center">
+    <h5 class="m-0 mr-auto text-green2">工具一覧</h5>
+    <% if !viewer?(current_user) %>
+      <%= link_to new_tool_path, class:"mr-1 btn btn-sm btn-success btn-width" do %>
+        <%= icon "fas", "plus" %>
+        新規登録
+      <% end %>
+    <% end %>
+    <%= link_to tools_path(format: :csv), class:"btn btn-sm btn-success btn-width" do %>
+      <%= icon "fas", "download" %>
+      CSV出力
+    <% end %>
+  </div>
+  <%= render partial: "index" %>
+</div>

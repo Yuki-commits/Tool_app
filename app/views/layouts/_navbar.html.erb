@@ -1,0 +1,85 @@
+<%# サイドバー %>
+<nav class="navbar-expand-lg navbar-light fixed-top px-3 vh-100 d-block overflow-auto bg-green1 sidebar">
+  <span class="logo nav-link text-center text-white border-bottom border-white">工具管理</span>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-sidebar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <%# メニュー %>
+  <div class="navbar-collapse collapse" id="nav-sidebar">
+    <ul class="navbar-nav d-block w-100">
+      <%# ログイン中のユーザー情報 %>
+      <%= link_to edit_user_path(current_user.id), class: "navbar-nav d-block text-center text-white my-5", id: "user-info" do %>
+        <p><%= current_user.employee_number %>：<%= current_user.name %></p>
+        <p><%= current_user.email %></p>
+        <p><%= current_user.group.name %></p>
+        <% if admin?(current_user) %>
+          <p>承認待ちユーザー：<%= User.where(group_id: current_user.group_id, approval_flag: false).count %>名</p>
+        <% elsif app_admin?(current_user) %>
+          <p>承認待ちユーザー：<%= User.where(approval_flag: false).count %>名</p>
+        <% end %>
+      <% end %>
+      <li class="nav-item <%= "active-sidebar" if request.controller_class == UsersController %>">
+        <%= link_to users_path, class: "nav-link text-white" do %>
+          <%= icon "fas", "id-card", class: "px-1" %>
+          ユーザー情報
+        <% end %>
+      </li>
+      <li class="nav-item <%= "active-sidebar" if request.controller_class == ToolsController %>">
+        <%= link_to tools_path, class: "nav-link text-white" do %>
+          <%= icon "fas", "tools", class: "px-1" %>
+          工具情報
+        <% end %>
+      </li>
+      <% if app_admin?(current_user) %>
+        <li class="nav-item <%= "active-sidebar" if request.controller_class == GroupsController %>">
+          <%= link_to groups_path, class: "nav-link text-white" do %>
+            <%= icon "fas", "users", class: "px-1" %>
+            部門マスタ
+          <% end %>
+        </li>
+      <% else %>
+        <li class="nav-item <%= "active-sidebar" if request.controller_class == GroupsController %>">
+          <%= link_to edit_group_path(id: current_user.group_id), class: "nav-link text-white" do %>
+            <%= icon "fas", "users", class: "px-1" %>
+            部門マスタ
+          <% end %>
+        </li>
+      <% end %>
+      <li class="nav-item <%= "active-sidebar" if request.controller_class == CategoriesController || request.controller_class == SubCategoriesController || request.controller_class == OtherCategoriesController %>">
+        <%= link_to categories_path, class: "nav-link text-white" do %>
+          <%= icon "fas", "layer-group", class: "px-1" %>
+          カテゴリーマスタ
+        <% end %>
+      </li>
+      <li class="nav-item <%= "active-sidebar" if request.controller_class == PlacesController %>">
+        <%= link_to places_path, class: "nav-link text-white" do %>
+          <%= icon "fas", "map", class: "px-1" %>
+          保管場所マスタ
+        <% end %>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<%# ヘッダー flex-column %>
+<nav class="navbar sticky-top bg-white ml-sidebar">
+  <p class="mr-auto my-0 ml-3 text-green2 menu-tilte">
+    <% if request.controller_class == UsersController %>
+      ユーザー情報
+    <% elsif request.controller_class == ToolsController %>
+      工具情報
+    <% elsif request.controller_class == GroupsController %>
+      部門情報
+    <% elsif request.controller_class == CategoriesController %>
+      カテゴリー情報
+    <% elsif request.controller_class == PlacesController %>
+      保管場所情報
+    <% end %>
+
+  </p>
+  <%= link_to logout_path, method: :delete, class: "nav-link text-green2" do %>
+    ログアウト
+    <%= icon "fas", "sign-out-alt" %>
+  <% end %>
+</nav>

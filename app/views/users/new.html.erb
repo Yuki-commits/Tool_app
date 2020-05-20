@@ -1,0 +1,69 @@
+<div class="container px-3">
+  <div class="col-lg-9 mx-auto py-5 rounded-lg border-green1 text-green2 bg-white-80 login-form">
+    <h2 class="mb-4 pl-4">新規登録</h2>
+
+    <%= form_for @user, html: { class: "mx-4" } do |f| %>
+
+      <%= render partial: "layouts/error_messages", locals: { model: f.object } %>
+
+      <%# ユーザー情報 %>
+      <div class="form-row">
+        <div class="form-group col-md">
+          <%= f.label :employee_number, class: "col-form-label col-form-label-sm" %>
+          <%= f.text_field :employee_number, required: true, class: "form-control form-control-sm" %>
+        </div>
+        <div class="form-group col-md">
+          <%= f.label :name, class: "col-form-label col-form-label-sm" %>
+          <%= f.text_field :name, required: true, class: "form-control form-control-sm" %>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md">
+          <%= f.label :email, class: "col-form-label col-form-label-sm" %>
+          <%= f.email_field :email, required: true, class: "form-control form-control-sm" %>
+        </div>
+      </div>
+
+      <%# 部門 %>
+      <div class="form-row">
+        <div class="form-group col-md">
+          <%= f.label :group_id, class: "col-form-label col-form-label-sm" %>
+          <select required="required" class="form-control form-control-sm" id="select-group-code" name="user[group_id]">
+            <option value>選択してください</option>
+            <%= @groups.each do |g| %>
+              <option value="<%= g.id %>"><%= g.code %></option>
+            <% end %>
+          </select>
+        </div>
+        <div class="form-group col-md">
+          <label class="col-form-label col-form-label-sm"><%= Group.human_attribute_name(:name) %></label>
+          <input disabled="disabled" class="form-control form-control-sm" id="select-group-name" type="text">
+        </div>
+      </div>
+
+      <%# ユーザー区分 %>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <%= render partial: "form_admin", locals: { selected_admin: 0 } %>
+        </div>
+      </div>
+
+      <%# パスワード %>
+      <div class="form-row">
+        <div class="form-group col-md">
+          <%= f.label :password, class: "col-form-label col-form-label-sm" %>
+          <%= f.password_field :password, required: true, class: "form-control form-control-sm" %>
+        </div>
+        <div class="form-group col-md">
+          <%= f.label :password_confirmation, class: "col-form-label col-form-label-sm" %>
+          <%= f.password_field :password_confirmation, required: true, class: "form-control form-control-sm" %>
+        </div>
+      </div>
+
+      <div class="mt-3 text-right">
+        <%= f.submit "登録", class: "btn btn-sm btn-success btn-width" %>
+      </div>
+
+    <% end %>
+  </div>
+</div>

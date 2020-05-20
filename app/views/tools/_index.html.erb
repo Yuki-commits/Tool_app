@@ -1,0 +1,21 @@
+<%# 検索フォーム %>
+<%= form_tag search_tools_path, method: :get, class: "input-group input-group-sm mb-3" do %>
+  <div class="input-group-prepend">
+    <select class="btn btn-outline-secondary rounded-left" name="search_column">
+      <option value="tool_code" <%= selected="selected" if @search_column == "tool_code" %>><%= Tool.human_attribute_name(:code) %></option>
+      <option value="tool_name" <%= selected="selected" if @search_column == "tool_name" %>><%= Tool.human_attribute_name(:name) %></option>
+      <option value="category_name" <%= selected="selected" if @search_column == "category_name" %>><%= Category.human_attribute_name(:name) %></option>
+      <option value="place_building" <%= selected="selected" if @search_column == "place_building" %>><%= PlaceMaster.human_attribute_name(:building) %></option>
+      <option value="place_room_num" <%= selected="selected" if @search_column == "place_room_num" %>><%= PlaceMaster.human_attribute_name(:room_num) %></option>
+      <option value="place_name" <%= selected="selected" if @search_column == "place_name" %>><%= PlaceMaster.human_attribute_name(:name) %></option>
+    </select>
+  </div>
+  <%= text_field_tag :search_value, "", placeholder: "検索", class: "form-control", value: @search_value %>
+  <div class="input-group-append">
+    <%= button_tag type: :submit, class: "btn btn-success" do %>
+      <%= icon "fas", "search" %>
+    <% end %>
+  </div>
+<% end %>
+
+<%= render partial: "index_table" %>

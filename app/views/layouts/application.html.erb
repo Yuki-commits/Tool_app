@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ToolApp</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= include_gon %>
+  </head>
+
+  <body class="bg-green0">
+
+    <% if logged_in? %>
+
+      <%= render partial: 'layouts/navbar' %>
+      <%= render partial: 'layouts/flash_messages' %>
+
+      <div class="ml-sidebar">
+        <div class="container">
+          <%= yield %>
+        </div>
+      </div>
+
+    <% else %>
+
+      <%= render partial: 'layouts/home_navbar' %>
+      <%= render partial: 'layouts/flash_messages' %>
+
+      <%= yield %>
+
+    <% end %>
+
+  </body>
+</html>

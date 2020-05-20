@@ -1,0 +1,10 @@
+<div class="mx-3 mt-4 mb-3 p-4 rounded-lg bg-white-80 border-green1 content-box">
+  <div class="mb-4 d-flex align-items-center">
+    <h5 class="m-0 mr-auto text-green2">工具一覧</h5>
+    <%= link_to tools_path, class:"btn btn-sm btn-danger btn-width" do %>
+      <%= icon "fas", "times-circle" %>
+      クリア
+    <% end %>
+  </div>
+  <%= render partial: "index" %>
+</div>
