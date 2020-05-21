@@ -66,7 +66,7 @@ class ToolsController < ApplicationController
 
   def update
     @tool.sub_category_id = tool_params[:sub_category_id]
-    other_category_name =params[:other_category_name]
+    other_category_name = params[:other_category_name]
 
     # サブカテゴリーにてその他選択時、その他に入力がない場合エラー表示
     if @tool.sub_category_id == 0 && other_category_name == ""
@@ -129,6 +129,11 @@ class ToolsController < ApplicationController
   end
 
   def destroy
+    if ToolUser.find_by(tool_id: @tool.id, returned_flag: false)
+      flash[:danger] = "使用中の工具は削除できません"
+      redirect_to edit_tool_path @tool.id
+      return
+    end
     @tool.destroy
     flash[:success] = "削除しました"
     redirect_to tools_path
