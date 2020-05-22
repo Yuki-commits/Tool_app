@@ -8,9 +8,7 @@ class OtherCategoriesController < ApplicationController
   end
 
   def update
-    @other_category.name = other_category_params[:name]
-    @other_category.category_id = other_category_params[:category_id]
-    if @other_category.save
+    if @other_category.update(other_category_params)
       flash[:success] = "更新しました"
       redirect_to categories_path
     else

@@ -30,9 +30,7 @@ class GroupsController < ApplicationController
   end
 
   def update
-    @group.code = group_params[:code]
-    @group.name = group_params[:name]
-    if @group.save
+    if @group.update(group_params)
       flash[:success] = "更新しました"
       redirect_to groups_path
     else

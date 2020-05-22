@@ -22,9 +22,7 @@ class SubCategoriesController < ApplicationController
   end
 
   def update
-    @sub_category.name = sub_category_params[:name]
-    @sub_category.category_id = sub_category_params[:category_id]
-    if @sub_category.save
+    if @sub_category.update(sub_category_params)
       flash[:success] = "更新しました"
       redirect_to categories_path
     else

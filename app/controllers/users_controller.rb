@@ -59,12 +59,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user.employee_number = user_params[:employee_number]
-    @user.name = user_params[:name]
-    @user.email = user_params[:email]
-    @user.group_id = user_params[:group_id]
-    @user.admin = user_params[:admin]
-    if @user.save
+    if @user.update(user_params)
       flash[:success] = "ユーザー情報を更新しました"
       redirect_to users_path
     else

@@ -25,8 +25,7 @@ class CategoriesController < ApplicationController
   end
 
   def update
-    @category.name = category_params[:name]
-    if @category.save
+    if @category.update(category_params)
       flash[:success] = "更新しました"
       redirect_to categories_path
     else

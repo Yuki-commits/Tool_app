@@ -27,11 +27,8 @@ class PlacesController < ApplicationController
   end
 
   def update
-    @place_master.building = place_master_params[:building]
-    @place_master.room_num = place_master_params[:room_num]
-    @place_master.name = place_master_params[:name]
-    if @place_master.save
-      flash[:success] = "登録しました"
+    if @place_master.update(place_master_params)
+      flash[:success] = "更新しました"
       redirect_to places_path
     else
       render :new
