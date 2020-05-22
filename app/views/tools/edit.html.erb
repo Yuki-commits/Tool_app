@@ -53,7 +53,7 @@
           <%= @tool.category.sub_categories.each do |sub_category| %>
             <option <%= selected="selected" if @tool.sub_category_id == sub_category.id %> value=<%= sub_category.id %>><%= sub_category.name %></option>
           <% end %>
-          <option <%= selected="selected" if @tool.other_category_id %>>その他</option>
+          <option <%= selected="selected" if @tool.sub_category_id == 0 %>>その他</option>
         </select>
       </div>
       <div class="form-group col-md">
