@@ -18,10 +18,10 @@
           <td><%= tool.name %></td>
           <td><%= tool.category.name %></td>
           <td>
-            <% if tool.sub_category_id %>
-              <%= tool.sub_category.name %>
-            <% else %>
+            <% if tool.other_category_id %>
               <%= tool.other_category.name %>
+            <% else %>
+              <%= tool.sub_category.name %>
             <% end %>
           </td>
           <td><%= tool.place.place_master.building %></td>

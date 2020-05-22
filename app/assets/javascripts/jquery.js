@@ -49,7 +49,7 @@ $(document).on('turbolinks:load', function() {
     if ($('#select-sub-category option:selected').text() == 'その他' ) {
       $otherCategory.removeAttr('disabled');
       $badgeRequired.removeClass('d-none');
-      
+
       // 「その他」選択時、Categoryに紐づくOtherCategoryのoptionタグを生成
       var categoryId = $('#select-category option:selected').val();
       var $otherCategoryDataList = $('#other-category-list')

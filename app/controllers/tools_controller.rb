@@ -38,21 +38,24 @@ class ToolsController < ApplicationController
     @tool = Tool.new(tool_params)
     @tool.user_id = current_user.id
     @tool.group_id = current_user.group_id
-    @tool.sub_category_id = nil if @tool.sub_category_id == 0
     other_category_name = params[:other_category_name]
 
-    # その他サブカテゴリーが入力されていた場合、以下の処理を実行
+    # サブカテゴリーにてその他選択時、その他に入力がない場合エラー表示
     if other_category_name == ""
       @error_message = "「その他」を入力してください"
       render :new
       return
-    else
+    end
+
+    if other_category_name
       @other_category = OtherCategory.find_by(category_id: @tool.category_id, name: other_category_name)
       # 入力されたその他サブカテゴリーがDBに存在しない場合はDBに新規で登録
       unless @other_category
-        @other_category = OtherCategory.new(name: other_category_name, category_id: @tool.category_id)
+        @other_category = OtherCategory.new(category_id: @tool.category_id, name: other_category_name)
         return render :new unless @other_category.save
       end
+      # 新規登録、又は既に登録済のその他サブカテゴリーを保存
+      @tool.sub_category_id = 0
       @tool.other_category_id = @other_category.id
     end
 
@@ -75,34 +78,20 @@ class ToolsController < ApplicationController
       return
     end
 
-    @tool.code = tool_params[:code]
-    @tool.name = tool_params[:name]
-    @tool.place_id = tool_params[:place_id]
-    @tool.category_id = tool_params[:category_id]
-    @tool.quantity = tool_params[:quantity]
-    @tool.price = tool_params[:price]
-
-    if @tool.sub_category_id == 0
-      @tool.sub_category_id = nil
-    else
-      @tool.other_category_id = nil
-    end
+    @tool.other_category_id = nil unless @tool.sub_category_id == 0
 
     if other_category_name
       @other_category = OtherCategory.find_by(category_id: @tool.category_id, name: other_category_name)
       # 入力されたその他サブカテゴリーがDBに存在しない場合はDBに新規で登録
       unless @other_category
         @other_category = OtherCategory.new(category_id: @tool.category_id, name: other_category_name)
-        unless @other_category.save
-          @other_category = nil
-          render :edit
-          return
-        end
+        return render :new unless @other_category.save
       end
+      # 新規登録、又は既に登録済のその他サブカテゴリーを保存
       @tool.other_category_id = @other_category.id
     end
 
-    if @tool.save
+    if @tool.update(tool_params)
       flash[:success] = "更新しました"
       redirect_to tools_path
     else
