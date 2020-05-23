@@ -8,13 +8,15 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.find_by(employee_number: user_params[:employee_number])
+    employee_number_or_email = params[:employee_number_or_email]
+    user = User.find_by(employee_number: employee_number_or_email)
+    user = User.find_by(email: employee_number_or_email) unless user
     if user && user.authenticate(user_params[:password])
       log_in user
       flash[:success] = "おかえりなさい。#{user.name}さん。"
       redirect_to users_path
     else
-      @error_massage = "社員番号またはパスワードが間違っています"
+      @error_massage = "社員番号・メールアドレスまたはパスワードが間違っています"
       render :new
     end
   end
@@ -27,7 +29,7 @@ class SessionsController < ApplicationController
 
   private
   def user_params
-    params.require(:session).permit(:employee_number, :password)
+    params.require(:session).permit(:password)
   end
 
 end

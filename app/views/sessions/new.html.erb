@@ -4,11 +4,8 @@
     <p class="mb-2 text-danger"><%= @error_massage %></p>
     <%= form_for :session, url: login_path, html: { class: "mx-3" } do |f| %>
       <div class="form-group">
-        <%= f.label :employee_number, User.human_attribute_name(:employee_number) %>
-        <%= f.text_field :employee_number, required: true, class: "form-control" %>
-        <div class="invalid-feedback">
-            入力してください
-        </div>
+        <label><%= "#{User.human_attribute_name(:employee_number)} 又は #{User.human_attribute_name(:email)}" %></label>
+        <input type="text" class="form-control form-control" name="employee_number_or_email">
       </div>
       <div class="form-group">
         <%= f.label :password, User.human_attribute_name(:password) %>
