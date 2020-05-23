@@ -23,6 +23,7 @@ class SubCategoriesController < ApplicationController
 
   def update
     if @sub_category.update(sub_category_params)
+      Tool.where(sub_category_id: @sub_category.id).update_all(category_id: @sub_category.category_id)
       flash[:success] = "更新しました"
       redirect_to categories_path
     else
