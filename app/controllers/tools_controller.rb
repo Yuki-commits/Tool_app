@@ -133,7 +133,7 @@ class ToolsController < ApplicationController
     @search_value = params[:search_value]
     @tools = Tool.search(@search_column, @search_value)
     @tools = @tools.where(group_id: current_user.group_id) unless app_admin?(current_user)
-
+    @tools = @tools.page(params[:page]).per(10)
     return @button_text = "詳細" if viewer?(current_user)
     @button_text = "編集"
   end

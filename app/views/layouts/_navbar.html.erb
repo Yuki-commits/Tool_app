@@ -1,12 +1,9 @@
 <%# サイドバー %>
-<nav class="navbar-expand-lg navbar-light fixed-top px-3 vh-100 d-block overflow-auto bg-green1 sidebar">
+<nav class="navbar-expand-lg navbar-light fixed-top px-3 vh-100 overflow-auto bg-green1 sidebar">
   <span class="logo nav-link text-center text-white border-bottom border-white">工具管理</span>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-sidebar">
-    <span class="navbar-toggler-icon"></span>
-  </button>
 
   <%# メニュー %>
-  <div class="navbar-collapse collapse" id="nav-sidebar">
+  <div id="nav-sidebar">
     <ul class="navbar-nav d-block w-100">
       <%# ログイン中のユーザー情報 %>
       <%= link_to edit_user_path(current_user.id), class: "navbar-nav d-block text-center text-white my-5", id: "user-info" do %>
