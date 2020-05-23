@@ -6,7 +6,7 @@
       <% if !@tool_user %>
         <%= link_to "借りる", tool_tool_users_path(tool_id: @tool.id), class: "mr-1 btn btn-sm btn-outline-secondary btn-width", method: :post %>
       <% elsif current_user?(@tool_user.user) %>
-        <%= link_to "返却する", tool_tool_users_path(tool_id: @tool.id), class: "mr-1 btn btn-sm btn-outline-secondary btn-width", method: :delete %>
+        <%= link_to "返却する", tool_tool_users_path(tool_id: @tool.id), class: "mr-1 btn btn-sm btn-outline-secondary btn-width", method: :patch %>
       <% else %>
         <%= link_to "#{@tool_user.user.name}にて現在使用中", edit_user_path(@tool_user.user.id), class: "mr-1 btn btn-sm btn-outline-secondary" %>
       <% end %>

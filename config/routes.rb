@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   resources :tools, except: [:show] do
-    resource :tool_users, only: [:create, :destroy]
+    resource :tool_users, only: [:create, :update]
     collection do
       get :search
     end
