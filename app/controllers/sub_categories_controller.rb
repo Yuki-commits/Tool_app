@@ -1,17 +1,20 @@
 class SubCategoriesController < ApplicationController
-  before_action :logged_in_user
-  before_action :set_categories, only:[:new, :create, :edit, :update, :destroy]
   before_action :set_target_sub_category, only:[:edit, :update, :destroy]
-  before_action :ensure_app_admin_or_admin, only:[:new, :create, :edit, :update, :destroy]
 
   def new
+    redirect_to categories_path unless current_user_check(1)
+    @categories = Category.all
     @sub_category = SubCategory.new
   end
 
   def edit
+    redirect_to categories_path unless current_user_check(1)
+    @categories = Category.all
   end
 
   def create
+    redirect_to categories_path unless current_user_check(1)
+    @categories = Category.all
     @sub_category = SubCategory.new(sub_category_params)
     if @sub_category.save
       flash[:success] = "登録しました"
@@ -22,6 +25,8 @@ class SubCategoriesController < ApplicationController
   end
 
   def update
+    redirect_to categories_path unless current_user_check(1)
+    @categories = Category.all
     if @sub_category.update(sub_category_params)
       Tool.where(sub_category_id: @sub_category.id).update_all(category_id: @sub_category.category_id)
       flash[:success] = "更新しました"
@@ -32,6 +37,8 @@ class SubCategoriesController < ApplicationController
   end
 
   def destroy
+    redirect_to categories_path unless current_user_check(1)
+    @categories = Category.all
     if @sub_category.destroy
       flash[:success] = "削除しました"
       redirect_to categories_path
@@ -41,14 +48,6 @@ class SubCategoriesController < ApplicationController
   end
 
   private
-  # アプリ管理者、管理者以外のユーザーをカテゴリー一覧ページにリダイレクト
-  def ensure_app_admin_or_admin
-    return if app_admin?(current_user)
-    return if admin?(current_user)
-    flash[:danger] = "権限がありません"
-    redirect_to categories_path
-  end
-
   def sub_category_params
     params.require(:sub_category).permit(:name, :category_id)
   end

@@ -1,11 +1,8 @@
 class GroupsController < ApplicationController
-  before_action :logged_in_user
-  before_action :ensure_app_admin, only:[:new, :index, :create, :update, :destroy]
-
-  before_action :set_groups, only:[:index, :new, :edit, :destroy]
   before_action :set_target_group, only:[:edit, :update, :destroy]
 
   def new
+    redirect_to edit_group_path(id: current_user.group_id) unless current_user_check(5)
     @group = Group.new
   end
 
@@ -17,9 +14,12 @@ class GroupsController < ApplicationController
   end
 
   def index
+    redirect_to edit_group_path(id: current_user.group_id) unless current_user_check(5)
+    @groups = Group.all
   end
 
   def create
+    redirect_to edit_group_path(id: current_user.group_id) unless current_user_check(5)
     @group = Group.new(group_params)
     if @group.save
       flash[:success] = "登録しました"
@@ -30,6 +30,7 @@ class GroupsController < ApplicationController
   end
 
   def update
+    redirect_to edit_group_path(id: current_user.group_id) unless current_user_check(5)
     if @group.update(group_params)
       flash[:success] = "更新しました"
       redirect_to groups_path
@@ -40,6 +41,7 @@ class GroupsController < ApplicationController
   end
 
   def destroy
+    redirect_to edit_group_path(id: current_user.group_id) unless current_user_check(5)
     if @group.destroy
       flash[:success] = "削除しました"
       redirect_to groups_path
@@ -49,13 +51,6 @@ class GroupsController < ApplicationController
   end
 
   private
-  # アプリ管理者以外のユーザーをグループ編集ページにリダイレクト
-  def ensure_app_admin
-    return if app_admin?(current_user)
-    flash[:danger] = "権限がありません"
-    redirect_to edit_group_path(id: current_user.group_id)
-  end
-
   def group_params
     params.require(:group).permit(:code, :name)
   end

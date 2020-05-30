@@ -15,11 +15,11 @@
       <th scope="col"></th>
     </thead>
     <tbody>
-      <% @groups.each do |g| %>
+      <% @groups.each do |group| %>
         <tr>
-          <td><%= g.code %></td>
-          <td><%= g.name %></td>
-          <td class="text-right"><%= link_to "編集", edit_group_path(g.id), class: "btn btn-sm btn-outline-dark" %></td>
+          <td><%= group.code %></td>
+          <td><%= group.name %></td>
+          <td class="text-right"><%= link_to "編集", edit_group_path(group.id), class: "btn btn-sm btn-outline-dark" %></td>
         </tr>
       <% end %>
     </tbody>

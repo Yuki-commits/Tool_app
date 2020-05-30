@@ -30,8 +30,8 @@
           <%= f.label :group_id, class: "col-form-label col-form-label-sm" %>
           <select required="required" class="form-control form-control-sm" id="select-group-code" name="user[group_id]">
             <option value>選択してください</option>
-            <%= @groups.each do |g| %>
-              <option value="<%= g.id %>"><%= g.code %></option>
+            <%= @groups.each do |group| %>
+              <option value="<%= group.id %>"><%= group.code %></option>
             <% end %>
           </select>
         </div>

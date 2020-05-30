@@ -1,9 +1,6 @@
 <div class="mb-4 d-flex align-items-center">
   <h5 class="m-0 mr-auto text-green2"><%= sub_title %></h5>
-  <%= link_to users_path, class:"btn btn-sm btn-success btn-width" do %>
-    <%= icon "fas", "list"%>
-    一覧画面へ
-  <% end %>
+  <%= link_to "一覧画面へ", users_path, class:"btn btn-sm btn-success btn-width" %>
 </div>
 
 <%# controller側でdisabledのプロパティに設定する値をインスタンス変数にして渡す %>

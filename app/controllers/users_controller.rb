@@ -1,22 +1,18 @@
 class UsersController < ApplicationController
-
-  before_action :logged_in_user, only:[:index, :show, :edit, :update, :destroy, :approval, :search]
-  before_action :forbid_login_user, only:[:new, :create]
-  before_action :ensure_app_admin_or_same_group_current_user, only:[:edit, :update]
-  before_action :ensure_group_admin, only:[:destroy, :approval]
-
-  before_action :set_target_user, only:[:show, :edit, :update, :destroy, :approval]
-  before_action :set_groups, only:[:new, :create, :show, :edit, :update]
-  before_action :set_options_admin, only:[:new, :create, :show, :edit, :index, :search]
-  before_action :gon_groups, only:[:new, :create, :edit]
-
-  def index
-    return @users = current_user.group.users.page(params[:page]).per(10) unless app_admin?(current_user)
-    @users = User.all.page(params[:page]).per(10)
-  end
+  skip_before_action :logged_in_user, only:[:new, :create]
+  before_action :forbid_login_user, only:[:new]
+  before_action :set_target_user, only:[:destroy, :edit, :approval]
 
   def new
     @user = User.new
+    @groups = Group.all
+    set_options_admin
+  end
+
+  def index
+    set_options_admin
+    return @users = current_user.group.users.page(params[:page]).per(10) unless app_admin?(current_user)
+    @users = User.all.page(params[:page]).per(10)
   end
 
   def create
@@ -32,10 +28,15 @@ class UsersController < ApplicationController
   end
 
   def edit
+    set_options_admin
+    redirect_to users_path unless current_user_check(3)
+
+    @groups = Group.all
     # 選択したユーザーが使用している工具一覧を取得
     @tools = Tool.joins(:tool_users).where(tool_users: { user_id: @user.id, returned_flag: false }).page(params[:page]).per(5)
     @button_text = "編集"
 
+    # 各項目の編集権限の設定
     if viewer?(current_user) || !current_user.approval_flag
       @viewer_disabled = true unless current_user?(@user)
       @general_disabled = true
@@ -46,6 +47,7 @@ class UsersController < ApplicationController
       @group_admin_boolean = true
     end
 
+    # 選択したユーザーがログイン中のユーザーかつアプリ管理者の場合は全部門の承認待ちユーザーを変数に格納
     if app_admin?(current_user) && current_user?(@user)
       @approval_pending_users = User.all.where(approval_flag: false) 
       return
@@ -69,6 +71,8 @@ class UsersController < ApplicationController
 
   # ユーザー登録申請されたユーザーに対しての承認処理
   def approval
+    redirect_to users_path unless current_user_check(6)
+
     if @user
       @user.approval_flag = true
       @user.save
@@ -91,6 +95,7 @@ class UsersController < ApplicationController
   end
 
   def search
+    set_options_admin
     @search_column = params[:search_column]
     @search_value = params[:search_value]
     @users = User.search(@search_column, @search_value)
@@ -104,27 +109,6 @@ class UsersController < ApplicationController
 
   def set_target_user
     @user = User.find_by(id: params[:id])
-  end
-
-  # ログイン中のユーザーが、選択されたユーザーと同一部門の管理者ではない場合、ユーザー一覧にリダイレクト
-  def ensure_group_admin
-    return if app_admin?(current_user)
-    set_target_user
-    if !group_admin? @user
-      flash[:danger] = "権限がありません"
-      redirect_to users_path
-    end
-  end
-
-  # ログイン中のユーザーが選択されたユーザーと同一部門、
-  # もしくはアプリ管理者ではない場合、ユーザー一覧にリダイレクト
-  def ensure_app_admin_or_same_group_current_user
-    return if app_admin?(current_user)
-    set_target_user
-    unless @user.group_id == current_user.group_id
-      flash[:danger] = "権限がありません"
-      redirect_to users_path
-    end
   end
 
 end

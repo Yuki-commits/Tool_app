@@ -1,10 +1,7 @@
 <div class="mx-3 mt-4 mb-3 p-4 rounded-lg bg-white-80 border-green1">
   <div class="mb-4 d-flex align-items-center">
     <h5 class="m-0 mr-auto text-green2">ユーザー詳細</h5>
-    <%= link_to users_path, class:"btn btn-sm btn-success btn-width" do %>
-      <%= icon "fas", "list"%>
-      一覧画面へ
-    <% end %>
+    <%= link_to "一覧画面へ", users_path, class:"btn btn-sm btn-success btn-width" %>
   </div>
 
   <%# controller側でdisabledのプロパティに設定する値をインスタンス変数にして渡す %>
@@ -35,8 +32,8 @@
       <div class="form-group col-md">
         <label class="col-form-label col-form-label-sm"><%= Group.human_attribute_name(:group_id) %></label>
         <select required="required" <%= disabled="disabled" if @group_admin_boolean %> class="form-control form-control-sm" id="select-group-code" name="user[group_id]">
-        <%= @groups.each do |g| %>
-          <option <%= selected="selected" if @user.group_id == g.id %> value="<%= g.id %>"><%= g.code %></option>
+        <%= @groups.each do |group| %>
+          <option <%= selected="selected" if @user.group_id == group.id %> value="<%= group.id %>"><%= group.code %></option>
         <% end %>
         </select>
       </div>

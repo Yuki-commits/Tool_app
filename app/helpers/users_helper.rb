@@ -26,7 +26,7 @@ module UsersHelper
     user.admin == 1
   end
 
-  # 引数で受け取ったユーザーが管理者の場合trueを返す
+  # 引数で受け取ったユーザーが部門管理者の場合trueを返す
   def admin?(user)
     return false unless user.approval_flag
     user.admin == 2

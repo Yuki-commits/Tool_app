@@ -1,18 +1,5 @@
 class ToolsController < ApplicationController
 
-  before_action :logged_in_user
-  before_action :ensure_not_viewer, only:[:new, :create, :destroy, :update]
-  before_action :ensure_tool_group_same_current_user_group, only:[:edit, :update, :destroy]
-
-  before_action :set_target_tool, only:[:edit, :update, :destroy]
-  before_action :set_groups, only:[:new, :create, :edit, :update]
-  before_action :set_places, only:[:new, :create, :edit, :update]
-  before_action :set_categories, only:[:new, :create, :edit, :update]
-  before_action :gon_groups, only:[:new, :create, :edit, :update]
-  before_action :gon_sub_categories, only:[:new, :create, :edit, :update]
-  before_action :gon_other_categories, only:[:new, :create, :edit, :update]
-  before_action :gon_place_Master, only:[:new, :create, :edit, :update]
-
   def index
     @button_text = "編集"
     if app_admin?(current_user)
@@ -25,16 +12,22 @@ class ToolsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do
-        send_data render_to_string, filename: "tool_list.csv", type: :csv
+        export_time = l Time.new, format: :long2
+        send_data render_to_string, filename: "tool_list_#{export_time}.csv", type: :csv
       end
     end
   end
 
   def new
+    redirect_to tools_path unless current_user_check(4)
     @tool = Tool.new
+    @categories = Category.all
+    @places = Place.all
   end
 
   def create
+    @categories = Category.all
+    @places = Place.all
     @tool = Tool.new(tool_params)
     @tool.user_id = current_user.id
     @tool.group_id = current_user.group_id
@@ -68,6 +61,9 @@ class ToolsController < ApplicationController
   end
 
   def update
+    redirect_to tools_path unless current_user_check(2)
+    @categories = Category.all
+    @places = Place.all
     @tool.sub_category_id = tool_params[:sub_category_id]
     other_category_name = params[:other_category_name]
 
@@ -100,6 +96,9 @@ class ToolsController < ApplicationController
   end
 
   def edit
+    redirect_to tools_path unless current_user_check(2)
+    @categories = Category.all
+    @places = Place.all
     # その他カテゴリーが登録されている場合は、インスタンス変数に値を代入
     # 登録されていない場合は、その他サブカテゴリー入力欄を編集不可にする
     if @tool.other_category_id
@@ -118,6 +117,7 @@ class ToolsController < ApplicationController
   end
 
   def destroy
+    redirect_to tools_path unless current_user_check(2)
     if ToolUser.find_by(tool_id: @tool.id, returned_flag: false)
       flash[:danger] = "使用中の工具は削除できません"
       redirect_to edit_tool_path @tool.id
@@ -145,23 +145,6 @@ class ToolsController < ApplicationController
 
   def set_target_tool
     @tool = Tool.find_by(id: params[:id])
-  end
-
-  # 選択した工具の管理部門とログイン中のユーザーの部門が一致しない場合は一覧ページにリダイレクト
-  # アプリ管理者を除く
-  def ensure_tool_group_same_current_user_group
-    set_target_tool
-    return if app_admin?(current_user)
-    return if @tool.group_id == current_user.group_id
-    flash[:danger] = "権限がありません"
-    redirect_to tools_path
-  end
-
-  # ユーザー区分が閲覧のみのユーザーを工具一覧ページにリダイレクト
-  def ensure_not_viewer
-    return unless viewer?(current_user)
-    flash[:danger] = "権限がありません"
-    redirect_to tools_path
   end
 
 end

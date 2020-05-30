@@ -1,13 +1,13 @@
 class OtherCategoriesController < ApplicationController
-  before_action :logged_in_user
-  before_action :set_categories, only:[:new, :create, :edit, :update, :destroy]
   before_action :set_target_other_category, only:[:edit, :update, :destroy]
-  before_action :ensure_app_admin_or_admin, only:[:new, :create, :edit, :update, :destroy]
 
   def edit
+    redirect_to categories_path unless current_user_check(1)
+    @categories = Category.all
   end
 
   def update
+    redirect_to categories_path unless current_user_check(1)
     if @other_category.update(other_category_params)
       Tool.where(other_category_id: @other_category.id).update_all(category_id: @other_category.category_id)
       flash[:success] = "更新しました"
@@ -18,6 +18,8 @@ class OtherCategoriesController < ApplicationController
   end
 
   def destroy
+    redirect_to categories_path unless current_user_check(1)
+    @categories = Category.all
     if @other_category.destroy
       flash[:success] = "削除しました"
       redirect_to categories_path
@@ -27,14 +29,6 @@ class OtherCategoriesController < ApplicationController
   end
 
   private
-  # アプリ管理者、管理者以外のユーザーをカテゴリー一覧ページにリダイレクト
-  def ensure_app_admin_or_admin
-    return if app_admin?(current_user)
-    return if admin?(current_user)
-    flash[:danger] = "権限がありません"
-    redirect_to categories_path
-  end
-
   def other_category_params
     params.require(:other_category).permit(:name, :category_id)
   end

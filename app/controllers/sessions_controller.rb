@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
 
+  skip_before_action :logged_in_user
   before_action :forbid_login_user, only:[:new, :create]
-  before_action :logged_in_user, only:[:destroy]
 
   def new
     @user = User.new

@@ -11,7 +11,8 @@ csv_str = CSV.generate do |csv|
     PlaceMaster.human_attribute_name(:building),
     PlaceMaster.human_attribute_name(:room_num),
     PlaceMaster.human_attribute_name(:name),
-    ToolUser.human_attribute_name(:user_id)
+    ToolUser.human_attribute_name(:user_id),
+    Tool.human_attribute_name(:created_at)
   ]
   csv << csv_column_names
   @tools.each do |tool|
@@ -19,6 +20,7 @@ csv_str = CSV.generate do |csv|
     sub_category_name = tool.sub_category.name if tool.sub_category
     other_category_name = tool.other_category.name if tool.other_category
     tool_user_employee_number = tool_user.user.employee_number if tool_user
+  
     csv_column_values = [
       tool.code,
       tool.name,
@@ -28,9 +30,12 @@ csv_str = CSV.generate do |csv|
       tool.place.place_master.building,
       tool.place.place_master.room_num,
       tool.place.place_master.name,
-      tool_user_employee_number
+      tool_user_employee_number,
+      tool.created_at.strftime("%Y/%-m/%-d %H:%M:%S")
     ]
+
     csv << csv_column_values
+
   end
 end
 

@@ -1,17 +1,17 @@
 class PlacesController < ApplicationController
-  before_action :logged_in_user
-  before_action :set_places, only:[:index]
   before_action :set_target_place, only:[:edit, :update, :destroy]
-  before_action :ensure_app_admin_or_admin, only:[:new, :create, :edit, :update, :destroy]
 
   def index
+    @places = Place.all
   end
 
   def new
+    redirect_to places_path unless current_user_check(1)
     @place_master = PlaceMaster.new
   end
 
   def create
+    redirect_to places_path unless current_user_check(1)
     @place_master = PlaceMaster.new(place_master_params)
     return render :new unless @place_master.save
     place = Place.new(place_master_id: @place_master.id)
@@ -24,9 +24,11 @@ class PlacesController < ApplicationController
   end
 
   def edit
+    redirect_to places_path unless current_user_check(1)
   end
 
   def update
+    redirect_to places_path unless current_user_check(1)
     if @place_master.update(place_master_params)
       flash[:success] = "更新しました"
       redirect_to places_path
@@ -36,6 +38,7 @@ class PlacesController < ApplicationController
   end
 
   def destroy
+    redirect_to places_path unless current_user_check(1)
     if @place_master.destroy
       flash[:success] = "削除しました"
       redirect_to places_path
@@ -45,14 +48,6 @@ class PlacesController < ApplicationController
   end
 
   private
-  # アプリ管理者、管理者以外のユーザーをカテゴリー一覧ページにリダイレクト
-  def ensure_app_admin_or_admin
-    return if app_admin?(current_user)
-    return if admin?(current_user)
-    flash[:danger] = "権限がありません"
-    redirect_to places_path
-  end
-
   def place_master_params
     params.require(:place_master).permit(:building, :room_num, :name)
   end
