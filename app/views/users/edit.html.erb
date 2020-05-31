@@ -62,7 +62,7 @@
 <%# 部門管理者のみ自部門内のユーザー登録申請一覧を表示 %>
 <% if @approval_pending_users %>
   <div class="mx-3 mt-4 mb-3 p-4 rounded-lg bg-white-80 border-green1">
-    <h5 class="text-green2 mb-4">部門内承認待ちユーザー一覧</h5>
+    <h5 class="text-green2 mb-4">承認待ちユーザー一覧</h5>
     <table class="table table-striped table-sm text-green2">
       <thead>
         <th scope="col"><%= User.human_attribute_name(:name) %></th>
