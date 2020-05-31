@@ -12,9 +12,9 @@
     <div class="form-row">
       <div class="form-group col-md">
         <%= f.label :category_id, class: "col-form-label col-form-label-sm" %>
-        <select required="required" class="form-control form-control-sm" id="select-category" name="other_category[category_id]">
+        <select required class="form-control form-control-sm" id="select-category" name="other_category[category_id]">
           <%= @categories.each do |category| %>
-            <option <%= selected="selected" if category.id == @other_category.category.id %> value=<%= category.id %>><%= category.name %></option>
+            <option <%= "selected" if category.id == @other_category.category.id %> value=<%= category.id %>><%= category.name %></option>
           <% end %>
         </select>
       </div>

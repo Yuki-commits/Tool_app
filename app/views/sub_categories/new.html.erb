@@ -13,7 +13,7 @@
     <div class="form-row">
       <div class="form-group col-md">
         <%= f.label :category_id, class: "col-form-label col-form-label-sm" %>
-        <select required="required" class="form-control form-control-sm" name="sub_category[category_id]">
+        <select required class="form-control form-control-sm" name="sub_category[category_id]">
           <option value>選択してください</option>
           <%= @categories.each do |category| %>
             <option value=<%= category.id %>><%= category.name %></option>

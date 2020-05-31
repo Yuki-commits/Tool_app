@@ -31,15 +31,15 @@
     <div class="form-row">
       <div class="form-group col-md">
         <label class="col-form-label col-form-label-sm"><%= Group.human_attribute_name(:group_id) %></label>
-        <select required="required" <%= disabled="disabled" if @group_admin_boolean %> class="form-control form-control-sm" id="select-group-code" name="user[group_id]">
+        <select required <%= "disabled" if @group_admin_boolean %> class="form-control form-control-sm" id="select-group-code" name="user[group_id]">
         <%= @groups.each do |group| %>
-          <option <%= selected="selected" if @user.group_id == group.id %> value="<%= group.id %>"><%= group.code %></option>
+          <option <%= "selected" if @user.group_id == group.id %> value="<%= group.id %>"><%= group.code %></option>
         <% end %>
         </select>
       </div>
       <div class="form-group col-md">
         <label class="col-form-label col-form-label-sm"><%= Group.human_attribute_name(:name) %></label>
-        <input disabled="disabled" class="form-control form-control-sm" id="select-group-name" type="text" value="<%= @user.group.name %>">
+        <input disabled class="form-control form-control-sm" id="select-group-name" type="text" value="<%= @user.group.name %>">
       </div>
     </div>
 

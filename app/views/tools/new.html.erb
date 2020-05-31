@@ -32,7 +32,7 @@
       <div class="form-group col-md">
         <label class="col-form-label col-form-label-sm"><%= Category.human_attribute_name(:name) %></label>
         <span class="badge badge-danger">必須</span>
-        <select required="required" class="form-control form-control-sm" id="select-category" name="tool[category_id]">
+        <select required class="form-control form-control-sm" id="select-category" name="tool[category_id]">
           <option value>選択してください</option>
           <%= @categories.each do |category| %>
             <option value="<%= category.id %>"><%= category.name %></option>
@@ -42,14 +42,14 @@
       <div class="form-group col-md">
         <label class="col-form-label col-form-label-sm"><%= SubCategory.human_attribute_name(:name) %></label>
         <span class="badge badge-danger">必須</span>
-        <select required="required" class="form-control form-control-sm" id="select-sub-category" name="tool[sub_category_id]">
+        <select required class="form-control form-control-sm" id="select-sub-category" name="tool[sub_category_id]">
           <option value>---</option>
         </select>
       </div>
       <div class="form-group col-md">
         <label class="col-form-label col-form-label-sm"><%= OtherCategory.human_attribute_name(:name) %></label>
         <span class="badge badge-danger d-none" id="badge-required">必須</span>
-        <input disabled="disabled" type="text" list="other-category-list" class="form-control form-control-sm" id="text-other-category" name="other_category_name">
+        <input disabled type="text" list="other-category-list" class="form-control form-control-sm" id="text-other-category" name="other_category_name">
         <datalist id="other-category-list">
         </datalist>
       </div>
@@ -60,7 +60,7 @@
       <div class="form-group col-md">
         <%= f.label :place_id, class: "col-form-label col-form-label-sm" %>
         <span class="badge badge-danger">必須</span>
-        <select required="required" class="form-control form-control-sm" id="select-place-id" name="tool[place_id]">
+        <select required class="form-control form-control-sm" id="select-place-id" name="tool[place_id]">
           <option value>選択してください</option>
           <%= @places.each do |place| %>
             <option value="<%= place.id %>"><%= place.id %></option>
@@ -69,15 +69,15 @@
       </div>
       <div class="form-group col-md">
         <label class="col-form-label col-form-label-sm"><%= PlaceMaster.human_attribute_name(:building) %></label>
-        <input disabled="disabled" class="form-control form-control-sm" id="select-place-building" type="text">
+        <input disabled class="form-control form-control-sm" id="select-place-building" type="text">
       </div>
       <div class="form-group col-md">
         <label class="col-form-label col-form-label-sm"><%= PlaceMaster.human_attribute_name(:room_num) %></label>
-        <input disabled="disabled" class="form-control form-control-sm" id="select-place-room" type="text">
+        <input disabled class="form-control form-control-sm" id="select-place-room" type="text">
       </div>
       <div class="form-group col-md">
         <label class="col-form-label col-form-label-sm"><%= PlaceMaster.human_attribute_name(:name) %></label>
-        <input disabled="disabled" class="form-control form-control-sm" id="select-place-name" type="text">
+        <input disabled class="form-control form-control-sm" id="select-place-name" type="text">
       </div>
     </div>
 

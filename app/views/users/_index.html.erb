@@ -2,9 +2,9 @@
 <%= form_tag search_users_path, method: :get, class: "input-group input-group-sm mb-3" do %>
   <div class="input-group-prepend">
     <select class="btn btn-outline-secondary rounded-left" name="search_column">
-      <option value="employee_number" <%= selected="selected" if @search_column == "employee_number" %>><%= User.human_attribute_name(:employee_number) %></option>
-      <option value="name" <%= selected="selected" if @search_column == "name" %>><%= User.human_attribute_name(:name) %></option>
-      <option value="email" <%= selected="selected" if @search_column == "email" %>><%= User.human_attribute_name(:email) %></option>
+      <option value="employee_number" <%= "selected" if @search_column == "employee_number" %>><%= User.human_attribute_name(:employee_number) %></option>
+      <option value="name" <%= "selected" if @search_column == "name" %>><%= User.human_attribute_name(:name) %></option>
+      <option value="email" <%= "selected" if @search_column == "email" %>><%= User.human_attribute_name(:email) %></option>
     </select>
   </div>
   <%= text_field_tag :search_value, "", placeholder: "検索", class: "form-control", value: @search_value %>
