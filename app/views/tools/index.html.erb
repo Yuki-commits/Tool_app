@@ -12,5 +12,16 @@
       CSV出力
     <% end %>
   </div>
-  <%= render partial: "index" %>
+
+  <%= render partial: "search_form", locals: { search_column: @search_column, search_value: @search_value } %>
+
+  <table class="table table-striped table-sm mb-0 text-green2">
+    <%= render 'table_head' %>
+    <tbody>
+      <%= render @tools if @tools.count > 0 %>
+    </tbody>
+  </table>
+  <p><%= "工具が登録されていません" if @tools.count == 0 %></p>
+  <%= paginate @tools %>
+
 </div>

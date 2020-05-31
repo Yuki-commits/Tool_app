@@ -1,0 +1,21 @@
+<tr>
+  <td><%= tool.code %></td>
+  <td><%= tool.name %></td>
+  <td><%= tool.category.name %></td>
+  <td>
+    <% if tool.other_category_id %>
+      <%= tool.other_category.name %>
+    <% else %>
+      <%= tool.sub_category.name %>
+    <% end %>
+  </td>
+  <td><%= tool.place.place_master.building %></td>
+  <td><%= tool.place.place_master.room_num %></td>
+  <td><%= tool.place.place_master.name %></td>
+  <% if tool.tool_users.find_by(returned_flag: false) %>
+    <td class="text-center"><%= icon "fas", "user-check", class: "text-success" %></td>
+  <% else %>
+    <td></td>
+  <% end %>
+  <td class="text-right"><%= link_to viewer?(current_user) ? "詳細" : "編集", edit_tool_path(tool.id), class: "btn btn-sm btn-outline-dark" %></td>
+</tr>
