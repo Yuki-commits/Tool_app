@@ -7,7 +7,7 @@
       <option value="email" <%= "selected" if @search_column == "email" %>><%= User.human_attribute_name(:email) %></option>
     </select>
   </div>
-  <%= text_field_tag :search_value, "", placeholder: "検索", class: "form-control", value: @search_value %>
+  <%= text_field_tag :search_value, "", placeholder: "検索", class: "form-control py-3", value: @search_value %>
   <div class="input-group-append">
     <%= button_tag type: :submit, class: "btn btn-success" do %>
       <%= icon "fas", "search" %>

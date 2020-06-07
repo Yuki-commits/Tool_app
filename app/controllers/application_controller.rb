@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_action :logged_in_user
+  before_action :current_user_check
   before_action :gon_select_options
 
   include ApplicationHelper

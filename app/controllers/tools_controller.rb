@@ -1,5 +1,7 @@
 class ToolsController < ApplicationController
 
+  before_action :set_target_tool, only:[:edit, :update, :destroy]
+
   def index
     if app_admin?(current_user)
       @tools = Tool.all.page(params[:page]).per(10)
@@ -17,15 +19,15 @@ class ToolsController < ApplicationController
   end
 
   def new
-    redirect_to tools_path unless current_user_check(4)
     @tool = Tool.new
     @categories = Category.all
     @places = Place.all
   end
 
   def create
-    @categories = Category.all
+    # TODO places, categories の取得は不要のはず調べてみる
     @places = Place.all
+    @categories = Category.all
     @tool = Tool.new(tool_params)
     @tool.user_id = current_user.id
     @tool.group_id = current_user.group_id
@@ -59,7 +61,6 @@ class ToolsController < ApplicationController
   end
 
   def update
-    redirect_to tools_path unless current_user_check(2)
     @categories = Category.all
     @places = Place.all
     @tool.sub_category_id = tool_params[:sub_category_id]
@@ -94,7 +95,6 @@ class ToolsController < ApplicationController
   end
 
   def edit
-    redirect_to tools_path unless current_user_check(2)
     @categories = Category.all
     @places = Place.all
     # その他カテゴリーが登録されている場合は、インスタンス変数に値を代入
@@ -115,7 +115,6 @@ class ToolsController < ApplicationController
   end
 
   def destroy
-    redirect_to tools_path unless current_user_check(2)
     if ToolUser.find_by(tool_id: @tool.id, returned_flag: false)
       flash[:danger] = "使用中の工具は削除できません"
       redirect_to edit_tool_path @tool.id

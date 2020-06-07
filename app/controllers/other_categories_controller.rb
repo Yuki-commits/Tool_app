@@ -2,12 +2,10 @@ class OtherCategoriesController < ApplicationController
   before_action :set_target_other_category, only:[:edit, :update, :destroy]
 
   def edit
-    redirect_to categories_path unless current_user_check(1)
     @categories = Category.all
   end
 
   def update
-    redirect_to categories_path unless current_user_check(1)
     if @other_category.update(other_category_params)
       Tool.where(other_category_id: @other_category.id).update_all(category_id: @other_category.category_id)
       flash[:success] = "更新しました"
@@ -18,7 +16,6 @@ class OtherCategoriesController < ApplicationController
   end
 
   def destroy
-    redirect_to categories_path unless current_user_check(1)
     @categories = Category.all
     if @other_category.destroy
       flash[:success] = "削除しました"

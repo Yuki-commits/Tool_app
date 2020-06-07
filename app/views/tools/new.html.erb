@@ -34,8 +34,8 @@
         <span class="badge badge-danger">必須</span>
         <select required class="form-control form-control-sm" id="select-category" name="tool[category_id]">
           <option value>選択してください</option>
-          <%= @categories.each do |category| %>
-            <option value="<%= category.id %>"><%= category.name %></option>
+          <% @categories.each do |category| %>
+            <option value=<%= category.id %>><%= category.name %></option>
           <% end %>
         </select>
       </div>

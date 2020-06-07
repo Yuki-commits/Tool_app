@@ -29,7 +29,6 @@ class UsersController < ApplicationController
 
   def edit
     set_options_admin
-    redirect_to users_path unless current_user_check(3)
 
     @groups = Group.all
     # 選択したユーザーが使用している工具一覧を取得
@@ -49,7 +48,7 @@ class UsersController < ApplicationController
 
     # 選択したユーザーがログイン中のユーザーかつアプリ管理者の場合は全部門の承認待ちユーザーを変数に格納
     if app_admin?(current_user) && current_user?(@user)
-      @approval_pending_users = User.all.where(approval_flag: false) 
+      @approval_pending_users = User.all.where(approval_flag: false)
       return
     end
 
@@ -71,8 +70,6 @@ class UsersController < ApplicationController
 
   # ユーザー登録申請されたユーザーに対しての承認処理
   def approval
-    redirect_to users_path unless current_user_check(6)
-
     if @user
       @user.approval_flag = true
       @user.save
@@ -100,6 +97,7 @@ class UsersController < ApplicationController
     @search_value = params[:search_value]
     @users = User.search(@search_column, @search_value)
     @users = @users.where(group_id: current_user.group_id) unless app_admin?(current_user)
+    @users = @users.page(params[:page]).per(10)
   end
 
   private

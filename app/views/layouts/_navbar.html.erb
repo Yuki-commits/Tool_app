@@ -62,18 +62,18 @@
 <%# ヘッダー flex-column %>
 <nav class="navbar sticky-top bg-white ml-sidebar">
   <p class="mr-auto my-0 ml-3 text-green2 menu-tilte">
-    <% if request.controller_class == UsersController %>
+    <% case request.controller_class.name %>
+    <% when UsersController.name %>
       ユーザー情報
-    <% elsif request.controller_class == ToolsController %>
+    <% when ToolsController.name %>
       工具情報
-    <% elsif request.controller_class == GroupsController %>
+    <% when GroupsController.name %>
       部門情報
-    <% elsif request.controller_class == CategoriesController %>
+    <% when CategoriesController.name %>
       カテゴリー情報
-    <% elsif request.controller_class == PlacesController %>
+    <% when PlacesController.name %>
       保管場所情報
     <% end %>
-
   </p>
   <%= link_to logout_path, method: :delete, class: "nav-link text-green2" do %>
     ログアウト

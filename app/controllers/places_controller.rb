@@ -6,12 +6,10 @@ class PlacesController < ApplicationController
   end
 
   def new
-    redirect_to places_path unless current_user_check(1)
     @place_master = PlaceMaster.new
   end
 
   def create
-    redirect_to places_path unless current_user_check(1)
     @place_master = PlaceMaster.new(place_master_params)
     return render :new unless @place_master.save
     place = Place.new(place_master_id: @place_master.id)
@@ -24,11 +22,9 @@ class PlacesController < ApplicationController
   end
 
   def edit
-    redirect_to places_path unless current_user_check(1)
   end
 
   def update
-    redirect_to places_path unless current_user_check(1)
     if @place_master.update(place_master_params)
       flash[:success] = "更新しました"
       redirect_to places_path
@@ -38,7 +34,6 @@ class PlacesController < ApplicationController
   end
 
   def destroy
-    redirect_to places_path unless current_user_check(1)
     if @place_master.destroy
       flash[:success] = "削除しました"
       redirect_to places_path
