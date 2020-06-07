@@ -25,7 +25,6 @@ class ToolsController < ApplicationController
   end
 
   def create
-    # TODO places, categories の取得は不要のはず調べてみる
     @places = Place.all
     @categories = Category.all
     @tool = Tool.new(tool_params)
